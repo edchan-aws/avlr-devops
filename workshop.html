@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)https://s3.amazonaws.com/aws-devops-workshop/site/index.html -->
+<html lang="en" data-inboxsdk-session-id="1554699179460-0.614832567769974"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="None">
+
+
+        <link rel="shortcut icon" href="https://s3.amazonaws.com/aws-devops-workshop/site/img/favicon.ico">
+        <title>AWS DevOps Workshop</title>
+        <link href="./workshop_files/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="./workshop_files/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="./workshop_files/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="./workshop_files/highlight.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="./workshop_files/jquery-1.10.2.min.js.download"></script>
+        <script src="./workshop_files/bootstrap-3.0.3.min.js.download"></script>
+        <script src="./workshop_files/highlight.pack.js.download"></script>
+    <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mustache.min" src="./workshop_files/mustache.min.js.download"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="lunr.min" src="./workshop_files/lunr.min.js.download"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="text" src="./workshop_files/text.js.download"></script></head>
+
+    <body class="homepage" style="">
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <a class="navbar-brand" href="https://s3.amazonaws.com/aws-devops-workshop/site/index.html#">AWS DevOps Workshop</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="https://s3.amazonaws.com/aws-devops-workshop/site/index.html#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+
+            <li class="main active"><a href="https://s3.amazonaws.com/aws-devops-workshop/site/index.html#prerequisites">Prerequisites</a></li>
+            <li class=""><a href="https://s3.amazonaws.com/aws-devops-workshop/site/index.html#lab-1-build-project-on-cloud">Lab 1 - Build project on the cloud</a></li>
+            <li class=""><a href="https://s3.amazonaws.com/aws-devops-workshop/site/index.html#lab-2-automate-deployment-for-testing">Lab 2 - Automate deployment for testing</a></li>
+            <li class=""><a href="https://s3.amazonaws.com/aws-devops-workshop/site/index.html#lab-3-setup-cicd-using-aws-codepipeline">Lab 3 - Setup CI/CD using AWS CodePipeline</a></li>
+            <li class=""><a href="https://s3.amazonaws.com/aws-devops-workshop/site/index.html#lab-4-using-lambda-as-test-stage-in-codepipeline">Lab 4 - Using Lambda as Test Stage in CodePipeline</a></li>
+            <li class=""><a href="https://s3.amazonaws.com/aws-devops-workshop/site/index.html#additional-exercise">Additional Exercise</a></li>
+            <li><a href="https://s3.amazonaws.com/aws-devops-workshop/site/index.html#cleanup-exercise">Clean up</a></li>
+            <li class="main"><a href="https://s3.amazonaws.com/aws-devops-workshop/site/index.html#authors">Authors</a></li>
+
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="aws-devops-essentials"><a href="./workshop_files/aws-reinvent-logo.png"><img alt="N|Solid" src="./workshop_files/aws-reinvent-logo.png"></a> AWS DevOps Essentials</h1>
+<h2 id="an-introductory-workshop-on-cicd-practices">An Introductory Workshop on CI/CD Practices</h2>
+<p>In few hours, quickly learn how to effectively leverage various AWS services to improve developer productivity and reduce the overall time to market for new product capabilities. In this session, we will demonstrate a prescriptive approach to incrementally adopt and embrace some of the best practices around continuous integration &amp; delivery using AWS Developer Tools and 3rd party solutions including, AWS CodeCommit (a managed source control service), AWS CodeBuild (a fully managed build service), Jenkins (an open source automated build server), CodePipeline (a fully managed continuous delivery service), and CodeDeploy (an automated application deployment service). We will also highlight some best practices and productivity tips that can help make your software release process fast, automated, and reliable.</p>
+<h1 id="prerequisites">Prerequisites:</h1>
+  <ul>
+    <li>
+        <p><strong>Configure AWS CodeCommit:</strong> The easiest way to set up AWS CodeCommit is to configure HTTPS Git credentials for AWS CodeCommit. On the user details page in IAM console, choose the <strong>Security Credentials</strong> tab, and in <strong>HTTPS Git credentials for AWS CodeCommit</strong>, choose <strong>Generate</strong>.</p><p>
+          <img src="./workshop_files/codecommit-iam-gc1.png" alt="HTTPS Git Credential">
+        <strong><u>💡 Note:</u></strong>
+        </p><p>Make Note of the Git HTTP credentials handy. It will be used for cloning and pushing changes to Repo.
+          Also, You can find detail instruction on how to configure HTTPS Git Credential <a href="https://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-gc.html">here</a></p>
+       <p></p>
+    </li>
+    <li>
+        <p><strong>IAM Permissions:</strong> Finally, for the AWS account ensure you have sufficient privileges. You must have permissions for the following services:</p>
+    </li>
+
+    <p>AWS Identity and Access Management</p>
+    <p>Amazon Simple Storage Service</p>
+    <p>AWS CodeCommit</p>
+    <p>AWS CodeBuild</p>
+    <p>AWS CloudFormation</p>
+    <p>AWS CodeDeploy</p>
+    <p>AWS CodePipeline</p>
+    <p>AWS Cloud9</p>
+    <p>Amazon EC2</p>
+    <p>Amazon SNS</p>
+</ul>
+<hr>
+<h3><strong><u>! Important:</u></strong></h3>
+<p>Select the region of your choice for the lab. Kindly the select the region which has all four Code* services. You can find the <a href="https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/">region services list</a>. Stick to the same region throughout all labs.</p>
+<h2 id="lab-1-build-project-on-cloud">Lab 1 - Build project on the cloud</h2>
+<h3 id="aws-cloud9-ide">AWS Cloud9 IDE - Set up</h3>
+  <p>AWS Cloud9 is a cloud-based integrated development environment (IDE) that lets you write, run, and debug your code with just a browser. It includes a code editor, debugger, and terminal. Cloud9 comes pre-packaged with essential tools for popular programming languages and the AWS Command Line Interface (CLI) pre-installed so you don’t need to install files or configure your laptop for this workshop. Your Cloud9 environment will have access to the same AWS resources as the user with which you logged into the AWS Management Console.</p>
+  <p>Take a moment now and setup your Cloud9 development environment.</p>
+  <p><strong>✅  Step-by-step Instructions</strong></p>
+  <ol type="1">
+    <li><p>Go to the AWS Management Console, click <strong>Services</strong> then select <strong>Cloud9</strong> under Developer Tools.</p></li>
+    <li><p>Click <strong>Create environment</strong>.</p></li>
+    <li><p>Enter <code>MyDevEnvironment</code> into <strong>Name</strong> and optionally provide a <strong>Description</strong>.</p></li>
+    <li><p>Click <strong>Next step</strong>.</p></li>
+    <li><p>You may leave <strong>Environment settings</strong> at their defaults of launching a new <strong>t2.micro</strong> EC2 instance which will be paused after <strong>30 minutes</strong> of inactivity.</p></li>
+    <li><p>Click <strong>Next step</strong>.</p></li>
+    <li><p>Review the environment settings and click <strong>Create environment</strong>. It will take several minutes for your environment to be provisioned and prepared.</p></li>
+    <li><p>Once ready, your IDE will open to a welcome screen. Below that, you should see a terminal prompt similar to:</p>
+        <p><img src="./workshop_files/setup-cloud9-terminal.png"></p>
+        <p>You can run AWS CLI commands in here just like you would on your local computer. Verify that your user is logged in by running <code>aws sts get-caller-identity</code>.</p>
+        <pre class="console"><code class="hljs vim">aws <span class="hljs-keyword">sts</span> <span class="hljs-built_in">get</span>-caller-identity</code></pre>
+        <p>You’ll see output indicating your account and user information:</p>
+        <pre class="console"><code class="hljs ruby"><span class="hljs-constant">Admin</span><span class="hljs-symbol">:~/environment</span> <span class="hljs-variable">$ </span>aws sts get-caller-identity</code></pre>
+        <div class="sourceCode" id="cb3">
+          <pre class="sourceCode json"><code class="sourceCode json hljs">
+<a class="sourceLine" id="cb3-1" data-line-number="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">    <span class="dt">"<span class="hljs-attribute">Account</span>"</span><span class="fu">:</span> <span class="st"><span class="hljs-value"><span class="hljs-string">"123456789012"</span></span></span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">    <span class="dt">"<span class="hljs-attribute">UserId</span>"</span><span class="fu">:</span> <span class="st"><span class="hljs-value"><span class="hljs-string">"AKIAI44QH8DHBEXAMPLE"</span></span></span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">    <span class="dt">"<span class="hljs-attribute">Arn</span>"</span><span class="fu">:</span> <span class="st"><span class="hljs-value"><span class="hljs-string">"arn:aws:iam::123456789012:user/Alice"</span></span></span></a><span class="hljs-value">
+</span><a class="sourceLine" id="cb3-5" data-line-number="5"><span class="fu">}</span></a>
+            </code></pre>
+        </div>
+      </li>
+  </ol>
+  <p>Keep your AWS Cloud9 IDE opened in a tab throughout this workshop as we’ll use it for activities like cloning, pushing changes to repository and using the AWS CLI.</p>
+  <h3 id="tips"><u>💡 Tips</u></h3>
+  <p>Keep an open scratch pad in Cloud9 or a text editor on your local computer for notes. When the step-by-step directions tell you to note something such as an ID or Amazon Resource Name (ARN), copy and paste that into the scratch pad.</p>
+  <hr>
+<h3 id="stage-1-create-an-aws-codecommit-repository">Stage 1: Create an AWS CodeCommit Repository</h3>
+<p><strong><em>To create the AWS CodeCommit repository (console)</em></strong></p>
+<ol>
+    <li>
+        <p>Open the AWS CodeCommit console at https://console.aws.amazon.com/codecommit.</p>
+    </li>
+    <li>
+        <p>In the region selector, choose the region where you will create the repository. For more information, see <a href="http://docs.aws.amazon.com/codecommit/latest/userguide/regions.html">Regions and Git Connection Endpoints</a>.</p>
+    </li>
+    <li>
+        <p>On the Welcome page, choose Get Started Now. (If a <strong><em>Dashboard</em></strong> page appears instead, choose <strong><em>Create repository</em></strong>.)</p>
+    </li>
+    <li>
+        <p>On the <strong><em>Create repository</em></strong> page, in the <strong><em>Repository name</em></strong> box, type <strong><em>WebAppRepo</em></strong>.</p>
+    </li>
+    <li>
+        <p>In the <strong><em>Description</em></strong> box, type <strong><em>My demonstration repository</em></strong>.</p>
+    </li>
+    <li>
+        <p>Choose <strong><em>Create repository</em></strong> to create an empty AWS CodeCommit repository named <strong><em>WebAppRepo</em></strong>.</p>
+    </li>
+</ol>
+<p><strong><em>Note</em></strong> The remaining steps in this tutorial assume you have named your AWS CodeCommit repository <strong><em>WebAppRepo</em></strong>. If you use a name other than <strong><em>WebAppRepo</em></strong>, be sure to use it throughout this tutorial. For more information about creating repositories, including how to create a repository from the terminal or command line, see <a href="http://docs.aws.amazon.com/codecommit/latest/userguide/how-to-create-repository.html">Create a Repository</a>.</p>
+
+<hr>
+
+<h3 id="stage-2-create-a-local-repo">Stage 2: Clone the Repo</h3>
+<p>In this step, you will connect to the source repository created in the previous step. To do this, you select a directory on your local machine that represents the local repo. You use Git to clone and initialize a copy of your empty AWS CodeCommit repository inside of that directory. Then you specify the user name and email address used to annotate your commits.</p>
+<ol>
+    <li>
+        <p>Go to Cloud9 IDE terminal prompt</p>
+    </li>
+    <li>
+        <p>In the region selector, choose the region where the repository was created. Repositories are specific to an AWS region.</p>
+    </li>
+    <li>
+        <p>Run git clone to pull down a copy of the repository into the local repo:</p>
+        <pre><code class="hljs php">git <span class="hljs-keyword"><span class="hljs-keyword">clone</span></span> https:<span class="hljs-comment"><span class="hljs-comment">//git-codecommit.&lt;YOUR-REGION&gt;.amazonaws.com/v1/repos/WebAppRepo</span></span>
+</code></pre>
+    <p>Provide your Git HTTPs credential when prompted. You would be seeing the following message if cloning is successful.</p>
+    <p><i>warning: You appear to have cloned an empty repository.</i></p>
+  </li>
+</ol>
+
+<hr>
+
+<h3 id="stage-3-commit-changes-to-remote-repo">Stage 3: Commit changes to Remote Repo</h3>
+<ol>
+    <li>
+        <p>Download the Sample Web App Archive by running the following command from IDE terminal.</p>
+        <pre><code class="hljs vim">wget http<span class="hljs-variable">s:</span>//s3.amazonaws.<span class="hljs-keyword">com</span>/devops-workshop-<span class="hljs-number">0526</span>-<span class="hljs-number">2051</span>/Web-App-Archive.zip  </code></pre>
+    </li>
+    <li>
+        <p>Unarchive and copy all the <strong><em>contents</em></strong> of the unarchived folder to your local repo folder.</p>
+        <pre><code class="hljs stata">unzip Web-<span class="hljs-keyword">App</span>-Archive.<span class="hljs-keyword">zip</span>
+mv -v Web-<span class="hljs-keyword">App</span>-Archive<span class="hljs-comment">/* WebAppRepo/</span></code></pre>
+    <p>After moving the files, your local repo should like the one below.</p>
+    <p><img src="./workshop_files/Cloud9-IDE-Screen-Sample.png"></p>
+    </li>
+    <li>
+        <p>Change the directory to your local repo folder. Run <strong><em>git add</em></strong> to stage the change:</p>
+    </li>
+        <pre><code class="hljs dockerfile">cd WebAppRepo
+git <span class="hljs-built_ins"><span class="hljs-built_ins">add</span></span> *
+</code></pre>
+    <li>Run <strong><em>git commit</em></strong> to commit the change:
+    <pre><code class="hljs sql">git <span class="hljs-operator"><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">commit</span></span></span><span class="hljs-operator"> -m </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"Initial Commit"</span></span></span><span class="hljs-operator">
+</span></span></code></pre>
+    </li>
+
+<p><strong><em>💡 Tip</em></strong> To see details about the commit you just made, run <strong><em>git log</em></strong>.</p>
+<li>
+    Run <strong><em>git push</em></strong> to push your commit through the default remote name Git uses for your AWS CodeCommit repository (origin), from the default branch in your local repo (master):
+</li>
+<pre><code class="hljs gradle">git <span class="hljs-keyword"><span class="hljs-keyword">push</span></span> -u origin master
+</code></pre>
+<p>Provide your Git HTTPs credential when prompted.</p>
+
+<p><strong><em>💡 Tip</em></strong> After you have pushed files to your AWS CodeCommit repository, you can use the AWS CodeCommit console to view the contents. For more information, see <a href="http://docs.aws.amazon.com/codecommit/latest/userguide/how-to-browse.html">Browse the Contents of a Repository</a>.</p>
+</ol>
+
+<hr>
+
+<h3 id="stage-4-prepare-build-service">Stage 4: Prepare Build Service</h3>
+<ol>
+<li><p>First, let us create the necessary roles required to finish labs. Run the CloudFormation stack to create service roles.
+  Ensure you are launching it in the same region as your AWS CodeCommit repo.</p></li>
+
+<pre><code class="hljs nimrod">aws cloudformation create-stack --stack-name <span class="hljs-type">DevopsWorkshop</span>-roles --<span class="hljs-keyword">template</span>-body https://s3.amazonaws.com/devops-workshop-<span class="hljs-number">0526</span>-<span class="hljs-number">2051</span>/<span class="hljs-number">01</span>-aws-devops-workshop-roles.<span class="hljs-keyword">template</span> --capabilities <span class="hljs-type">CAPABILITY_IAM</span>
+</code></pre>
+
+<p><strong><em>Tip</em></strong> To learn more about AWS CloudFormation, please refer to <a ref="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html"> AWS CloudFormation UserGuide.</a></p>
+<li>
+    <p>Upon completion take a note on the service roles created. Check <a href="http://docs.aws.amazon.com/cli/latest/reference/cloudformation/describe-stacks.html">describe-stacks</a> to find the output of the stack.</p>
+</li>
+<li>
+    <p>For Console, refer to the CloudFormation <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-view-stack-data-resources.html">Outputs tab </a> to see output.</p>
+    <p> A S3 Bucket is also created. Make a note of this bucket. This will be used to store the output from CodeBuild in the next step.</p>
+    <p><strong><em>Sample Output:</em></strong></p>
+    <p><img src="./workshop_files/cfn-output.png"></p>
+</li>
+<li>
+    <p>Let us <strong>create CodeBuild</strong> project from <strong>CLI</strong>. To create the build project using AWS CLI, we need JSON-formatted input.
+    <strong><em>Create</em></strong> a json file named <strong><em>'create-project.json'</em></strong> under 'MyDevEnvironment'. </p>
+    <p><img src="./workshop_files/create-json.png"></p>
+    <p>Copy the content below to create-project.json. (Replace the placeholders marked with <strong><em>&lt;&lt;&gt;&gt;</em></strong> with your own values.) To know more about the codebuild project json <a href="http://docs.aws.amazon.com/codebuild/latest/userguide/create-project.html#create-project-cli">review the spec</a>.</p>
+</li>
+
+<pre><code class="hljs json">{
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"devops-webapp-project"</span></span>,
+  "<span class="hljs-attribute">source</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"CODECOMMIT"</span></span>,
+    "<span class="hljs-attribute">location</span>": <span class="hljs-value"><span class="hljs-string">"https://git-codecommit.&lt;&lt;YOUR-REGION-ID&gt;&gt;.amazonaws.com/v1/repos/&lt;&lt;YOUR-REPO-NAME&gt;&gt;"</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">artifacts</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"S3"</span></span>,
+    "<span class="hljs-attribute">location</span>": <span class="hljs-value"><span class="hljs-string">"&lt;&lt;YOUR-CODEBUILD-OUTPUT-BUCKET&gt;&gt;"</span></span>,
+    "<span class="hljs-attribute">packaging</span>": <span class="hljs-value"><span class="hljs-string">"ZIP"</span></span>,
+    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"WebAppOutputArtifact.zip"</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">environment</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"LINUX_CONTAINER"</span></span>,
+    "<span class="hljs-attribute">image</span>": <span class="hljs-value"><span class="hljs-string">"aws/codebuild/java:openjdk-8"</span></span>,
+    "<span class="hljs-attribute">computeType</span>": <span class="hljs-value"><span class="hljs-string">"BUILD_GENERAL1_SMALL"</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">serviceRole</span>": <span class="hljs-value"><span class="hljs-string">"&lt;&lt;BuildRoleArn-FROM-CLOUDFORMATION-OUTPUT&gt;&gt;"</span>
+</span>}
+</code></pre>
+
+                <li>Switch to the directory that contains the file you just saved, and run the <strong><em>create-project</em></strong> command:</li>
+
+  <pre><code class="hljs stata">aws codebuild create-project --<span class="hljs-keyword">cli</span>-<span class="hljs-keyword">input</span>-json <span class="hljs-keyword">file</span>:<span class="hljs-comment">//create-project.json</span>
+</code></pre>
+<li>Sample output JSON for your reference</li>
+<pre><code class="hljs json">{
+  "<span class="hljs-attribute">project</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"project-name"</span></span>,
+    "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"description"</span></span>,
+    "<span class="hljs-attribute">serviceRole</span>": <span class="hljs-value"><span class="hljs-string">"serviceRole"</span></span>,
+    "<span class="hljs-attribute">tags</span>": <span class="hljs-value">[
+      {
+        "<span class="hljs-attribute">key</span>": <span class="hljs-value"><span class="hljs-string">"tags-key"</span></span>,
+        "<span class="hljs-attribute">value</span>": <span class="hljs-value"><span class="hljs-string">"tags-value"</span>
+      </span>}
+    ]</span>,
+    "<span class="hljs-attribute">artifacts</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">namespaceType</span>": <span class="hljs-value"><span class="hljs-string">"namespaceType"</span></span>,
+      "<span class="hljs-attribute">packaging</span>": <span class="hljs-value"><span class="hljs-string">"packaging"</span></span>,
+      "<span class="hljs-attribute">path</span>": <span class="hljs-value"><span class="hljs-string">"path"</span></span>,
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"artifacts-type"</span></span>,
+      "<span class="hljs-attribute">location</span>": <span class="hljs-value"><span class="hljs-string">"artifacts-location"</span></span>,
+      "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"artifacts-name"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">lastModified</span>": <span class="hljs-value">lastModified</span>,
+    "<span class="hljs-attribute">timeoutInMinutes</span>": <span class="hljs-value">timeoutInMinutes</span>,
+    "<span class="hljs-attribute">created</span>": <span class="hljs-value">created</span>,
+    "<span class="hljs-attribute">environment</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">computeType</span>": <span class="hljs-value"><span class="hljs-string">"computeType"</span></span>,
+      "<span class="hljs-attribute">image</span>": <span class="hljs-value"><span class="hljs-string">"image"</span></span>,
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"environment-type"</span></span>,
+      "<span class="hljs-attribute">environmentVariables</span>": <span class="hljs-value">[
+        {
+          "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"environmentVariable-name"</span></span>,
+          "<span class="hljs-attribute">value</span>": <span class="hljs-value"><span class="hljs-string">"environmentVariable-value"</span></span>,
+          "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"environmentVariable-type"</span>
+        </span>}
+      ]
+    </span>}</span>,
+    "<span class="hljs-attribute">source</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"source-type"</span></span>,
+      "<span class="hljs-attribute">location</span>": <span class="hljs-value"><span class="hljs-string">"source-location"</span></span>,
+      "<span class="hljs-attribute">buildspec</span>": <span class="hljs-value"><span class="hljs-string">"buildspec"</span></span>,
+      "<span class="hljs-attribute">auth</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"auth-type"</span></span>,
+        "<span class="hljs-attribute">resource</span>": <span class="hljs-value"><span class="hljs-string">"resource"</span>
+      </span>}
+    </span>}</span>,
+    "<span class="hljs-attribute">encryptionKey</span>": <span class="hljs-value"><span class="hljs-string">"encryptionKey"</span></span>,
+    "<span class="hljs-attribute">arn</span>": <span class="hljs-value"><span class="hljs-string">"arn"</span>
+  </span>}
+</span>}
+</code></pre>
+<li><p>If successful, output JSON should have values such as:</p></li>
+<ul>
+<li><p>The lastModified value represents the time, in Unix time format, when information about the build project was last changed.</p></li>
+<li><p>The created value represents the time, in Unix time format, when the build project was created.</p></li>
+<li><p>The ARN value represents the ARN of the build project.</p></li>
+</ul>
+<p><strong><em>Note</em></strong> Except for the build project name, you can change any of the build project's settings later. For more information, see <a href="http://docs.aws.amazon.com/codebuild/latest/userguide/change-project.html#change-project-cli">Change a Build Project's Settings (AWS CLI)</a>.</p>
+</ol>
+
+<hr>
+
+<h3 id="stage-5-lets-build-the-code-on-cloud">Stage 5: Let's build the code on cloud</h3>
+<ol>
+    <li><p>A build spec is a collection of build commands and related settings in YAML format, that AWS CodeBuild uses to run a build.
+    Create a file namely, <strong><em>buildspec.yml</em></strong> under <strong>WebAppRepo</strong> folder. Copy the content below to the file and save it. To know more about <a href="http://docs.aws.amazon.com/codebuild/latest/userguide/concepts.html#concepts-how-it-works">how CodeBuild works</a>.</p></li>
+
+<pre><code class="hljs http"><span class="hljs-attribute">version</span>: <span class="hljs-string">0.1</span>
+
+<span class="haml">phases:
+  install:
+    commands:
+      -<span class="ruby"> echo <span class="hljs-constant">Nothing</span> to <span class="hljs-keyword">do</span> <span class="hljs-keyword">in</span> the install phase...
+</span>  pre_build:
+    commands:
+      -<span class="ruby"> echo <span class="hljs-constant">Nothing</span> to <span class="hljs-keyword">do</span> <span class="hljs-keyword">in</span> the pre_build phase...
+</span>  build:
+    commands:
+      -<span class="ruby"> echo <span class="hljs-constant">Build</span> started on <span class="hljs-string">`date`</span>
+</span>      -<span class="ruby"> mvn install
+</span>  post_build:
+    commands:
+      -<span class="ruby"> echo <span class="hljs-constant">Build</span> completed on <span class="hljs-string">`date`</span>
+</span>artifacts:
+  files:
+    -<span class="ruby"> target/javawebdemo.war
+</span>  discard-paths: yes
+</span></code></pre>
+<p>As a sample shown below:</p>
+<p><img src="./workshop_files/build-spec.png"></p>
+<p><strong><em>Note</em></strong> Visit this <a href="http://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html">page</a> to know more about build spec and how you can use multiple build specs in the same repo. </p>
+<li>Run the <strong><em>start-build</em></strong> command:</li>
+
+<pre><code class="hljs puppet">aws codebuild <span class="hljs-literal">start</span>-build --<span class="hljs-literal">project</span>-<span class="hljs-literal">name</span> devops-webapp-<span class="hljs-literal">project</span>
+</code></pre>
+
+<p><strong><em>Note:</em></strong> You can start build with more advance configuration setting via JSON. If you are interested to learn more about it, please visit <a href="http://docs.aws.amazon.com/codebuild/latest/userguide/run-build.html#run-build-cli">here</a>.</p>
+    <li>
+        <p>If successful, data would appear showing successful submission. Make a note of the build id value. You will need it in the next step.</p>
+    </li>
+    <li>
+        <p>In this step, you will view summarized information about the status of your build.</p>
+    </li>
+<pre><code class="hljs ruby">aws codebuild batch-get-builds --ids &lt;&lt;<span class="hljs-constant">ID</span><span class="hljs-prompt">&gt;&gt;
+</span></code></pre>
+
+
+            <p><strong><em>Note:</em></strong> Replace &lt;&lt;
+                <id>&gt;&gt; with the id value that appeared in the output of the previous step.</id>
+            </p>
+                <li>
+                    <p>Did the build succeed? if the build failed, why? The reason is build spec YAML file is not pushed to the repository. Push the code changes by <strong>git add, commit, and push</strong>. <strong>Repeat</strong> steps from 2 through 4.</p>
+                </li>
+                <li>
+                    <p>You will also be able to view detailed information about your build in CloudWatch Logs. You can complete this step by visiting the AWS CodeBuild console.</p>
+                </li>
+                <li>
+                    <p>In this step, you will verify the <strong><em>WebAppOutputArtifact.zip</em></strong> file that AWS CodeBuild built and then uploaded to the output bucket. You can complete this step by <strong>visiting</strong> the <strong>AWS CodeBuild console</strong> or the <strong>Amazon S3 console</strong>.</p>
+                </li>
+            </ol>
+            <p><strong><em>Note:</em></strong> Troubleshooting CodeBuild - Use the <a href="http://docs.aws.amazon.com/codebuild/latest/userguide/troubleshooting.html">information</a> to help you identify, diagnose, and address issues.</p>
+            <h3 id="summary">Summary:</h3>
+            <p>This <strong>concludes Lab 1</strong>. In this lab, we successfully created repository with version control using AWS CodeCommit and built our code on the cloud using AWS CodeBuild service.</p>
+            <p><strong><em>✅ Do It Yourself (DIY):</em></strong> Using the CodeCommit Console try to do the following tasks. - Create an additional branch within your repository.</p>
+            <ul>
+                <li>
+                    <p>Make changes to the new branch and compare the changes between branches.</p>
+                </li>
+                <li>
+                    <p>Enable triggers on your repository for specific events.</p>
+                </li>
+            </ul>
+
+<hr>
+
+<h2 id="lab-2-automate-deployment-for-testing">Lab 2 - Automate deployment for testing</h2>
+<h3 id="stage-1-prepare-environment-for-testing">Stage 1: Prepare environment for Testing</h3>
+<ol>
+  <li>
+<p>Run the CloudFormation stack using the following AWS CLI command:</p>
+</li>
+<pre><code class="hljs nimrod">aws cloudformation create-stack --stack-name <span class="hljs-type">DevopsWorkshop</span>-<span class="hljs-type">Env</span> --<span class="hljs-keyword">template</span>-url https://s3.amazonaws.com/devops-workshop-<span class="hljs-number">0526</span>-<span class="hljs-number">2051</span>/<span class="hljs-number">02</span>-aws-devops-workshop-environment-setup.<span class="hljs-keyword">template</span> --capabilities <span class="hljs-type">CAPABILITY_IAM</span>
+</code></pre>
+<strong><em>Note</em></strong>
+<ul>
+  <li>
+<p>The Stack will have a VPC w/ 1 public subnet, an IGW, route tables, ACL, 2 EC2 instances. Also, the EC2 instances will be launched with a User Data script to <strong>automatically install the AWS CodeDeploy agent</strong>.
+</p>
+</li>
+<li>
+<p><strong>Verify</strong> that by visiting the <strong>EC2 Console</strong> and view option for <strong>user data</strong>.You would see the following script.</p>
+</li>
+<pre><code class="hljs d"><span class="hljs-shebang">#!/bin/bash -ex</span>
+yum install -y aws-cli
+cd /home/ec2-user/
+wget https:<span class="hljs-comment">//aws-codedeploy-us-east-1.s3.amazonaws.com/latest/codedeploy-agent.noarch.rpm</span>
+yum -y install codedeploy-agent.noarch.rpm
+service codedeploy-agent start
+</code></pre>
+<li>
+      <p>You can refer to <a href="http://docs.aws.amazon.com/codedeploy/latest/userguide/codedeploy-agent-operations-install.html"> this instruction </a> to install the CodeDeploy agent for other OSs like Amazon Linux, RHEL, Ubuntu, or Windows.</p>
+</li>
+<li>
+      <p>AWS CodeDeploy can deploy to both Amazon EC2 instances and on-premises instances.To know more <a href="http://docs.aws.amazon.com/codedeploy/latest/userguide/instances.html">visit</a>.</p>
+</li>
+</ul>
+</ol>
+
+<hr>
+
+<h3 id="stage-2-create-codedeploy-application-and-deployment-group">Stage 2: Create CodeDeploy Application and Deployment group</h3>
+<ol>
+<li><p>Run the following to create an application for CodeDeploy.</p></li>
+<pre><code class="hljs sql">aws deploy <span class="hljs-operator"><span class="hljs-keyword">create</span>-application <span class="hljs-comment">--application-name DevOps-WebApp</span>
+</span></code></pre>
+<li><p>Run the following to create a deployment group and associates it with the specified application and the user's AWS account.</p>
+  <p> You need to replace the service role with <strong>DeployRoleArn Value</strong> we created using roles CFN stack.</p></li>
+<pre><code class="hljs fortran">aws deploy create-deployment-group --application-<span class="hljs-keyword">name</span> DevOps-WebApp  --deployment-config-<span class="hljs-keyword">name</span> CodeDeployDefault.OneAtATime --deployment-group-<span class="hljs-keyword">name</span> DevOps-WebApp-BetaGroup --ec2-tag-filters Key=<span class="hljs-keyword">Name</span>,<span class="hljs-keyword">Value</span>=DevWebApp01,<span class="hljs-keyword">Type</span>=KEY_AND_VALUE --service-role-arn &lt;&lt;REPLACE-WITH-YOUR-CODEDEPLOY-ROLE-ARN&gt;&gt;
+</code></pre>
+
+<p><strong><em>Note:</em></strong> We are using the tags to attach instances to the deployment group.</p>
+<li>Let us review all the changes by visiting the CodeDeploy Console.</li>
+</ol>
+
+<hr>
+
+<h3 id="stage-3-prepare-application-for-deployment">Stage 3: Prepare application for deployment</h3>
+<ol>
+<li>
+<p>Without an AppSpec file, AWS CodeDeploy cannot map the source files in your application revision to their destinations or run scripts at various stages of the deployment.</p>
+</li>
+<li>
+<p>Copy the template into a text editor and save the file as <strong><em>appspec.yml</em></strong> in the <strong><em>WebAppRepo</em></strong> directory of the revision.</p>
+</li>
+<pre><code class="hljs less"><span class="hljs-attribute">version</span>: <span class="hljs-number">0.0</span>
+<span class="hljs-attribute">os</span>: linux
+<span class="hljs-attribute">files</span>:
+  - <span class="hljs-attribute">source</span>: /target/javawebdemo.war
+    <span class="hljs-attribute">destination</span>: /tmp/codedeploy-deployment-staging-area/
+  - <span class="hljs-attribute">source</span>: /scripts/configure_http_port.xsl
+    <span class="hljs-attribute">destination</span>: /tmp/codedeploy-deployment-staging-area/
+<span class="hljs-attribute">hooks</span>:
+  <span class="hljs-attribute">ApplicationStop</span>:
+    - <span class="hljs-attribute">location</span>: scripts/stop_application
+      <span class="hljs-attribute">timeout</span>: <span class="hljs-number">300</span>
+  <span class="hljs-attribute">BeforeInstall</span>:
+    - <span class="hljs-attribute">location</span>: scripts/install_dependencies
+      <span class="hljs-attribute">timeout</span>: <span class="hljs-number">300</span>
+  <span class="hljs-attribute">ApplicationStart</span>:
+    - <span class="hljs-attribute">location</span>: scripts/write_codedeploy_config.sh
+    - <span class="hljs-attribute">location</span>: scripts/start_application
+      <span class="hljs-attribute">timeout</span>: <span class="hljs-number">300</span>
+  <span class="hljs-attribute">ValidateService</span>:
+    - <span class="hljs-attribute">location</span>: scripts/basic_health_check.sh
+
+</code></pre>
+<p>As a sample shown below:</p>
+<p><img src="./workshop_files/app-spec.png"></p>
+
+<li>
+<p><strong><em>Review</em></strong> the <strong><em>script folder</em></strong> in the repo for the various scripts like Start, Stop, health check etc. These scripts will be called as per the hook definition in <strong><em>appsec.yml</em></strong> file during deployment.</p>
+</li>
+<li>
+<p>Since we are going to deploy the application via CodeDeploy, we need to package additional files needed by CodeDeploy. Let us <strong><em>make change</em></strong> to the <strong><em>buildspec.yml</em></strong> to incorporate the changes.</p>
+</li>
+<pre><code class="hljs http"><span class="hljs-attribute">version</span>: <span class="hljs-string">0.1</span>
+
+<span class="haml">phases:
+  install:
+    commands:
+      -<span class="ruby"> echo <span class="hljs-constant">Nothing</span> to <span class="hljs-keyword">do</span> <span class="hljs-keyword">in</span> the install phase...
+</span>  pre_build:
+    commands:
+      -<span class="ruby"> echo <span class="hljs-constant">Nothing</span> to <span class="hljs-keyword">do</span> <span class="hljs-keyword">in</span> the pre_build phase...
+</span>  build:
+    commands:
+      -<span class="ruby"> echo <span class="hljs-constant">Build</span> started on <span class="hljs-string">`date`</span>
+</span>      -<span class="ruby"> mvn install
+</span>  post_build:
+    commands:
+      -<span class="ruby"> echo <span class="hljs-constant">Build</span> completed on <span class="hljs-string">`date`</span>
+</span>artifacts:
+  files:
+    -<span class="ruby"> appspec.yml
+</span>    -<span class="ruby"> scripts/**<span class="hljs-regexp">/*
+</span></span>    -<span class="ruby"> target/javawebdemo.war
+</span>
+</span></code></pre>
+<li>Save the changes to buildspec.yml. Run <strong><em>git add, commit, and push</em></strong> the changes to CodeCommit repo.</li>
+</ol>
+
+<hr>
+
+<h3 id="stage-4-deploy-an-application-revision">Stage 4: Deploy an application revision</h3>
+<ol>
+<li>Run the <strong><em>start-build</em></strong> command:</li>
+<pre><code class="hljs puppet">aws codebuild <span class="hljs-literal">start</span>-build --<span class="hljs-literal">project</span>-<span class="hljs-literal">name</span> devops-webapp-<span class="hljs-literal">project</span>
+</code></pre>
+<li>
+  <p>Visit the CodeBuild Console to ensure build is successful. Upon successful completion of build, we should see new <strong><em>WebAppOutputArtifact.zip</em></strong> upload to the configured CodeBuild S3 Bucket.</p>
+  </li>
+  <li>
+  <p>Get the <strong><em>eTag</em></strong> for the object <strong>WebAppOutputArtifact.zip</strong> uploaded to S3 bucket. You can get etag by visiting S3 console. Or, executing the following command.</p>
+  </li>
+  <pre><code class="hljs stylus">aws s3api head-<span class="hljs-tag">object</span> --bucket &lt;&lt;YOUR-CODEBUILD-OUTPUT-BUCKET&gt;&gt; --key WebAppOutputArtifact<span class="hljs-class">.zip</span>
+  </code></pre>
+  <p>As a sample S3 properties console showing etag below:</p>
+  <p><img src="./workshop_files/etag.png"></p>
+  <li>Run the following to create a deployment. <strong><em>Replace</em></strong> &lt;&lt;YOUR-CODEBUILD-OUTPUT-BUCKET&gt;&gt; with your <strong><em>S3 bucket name</em></strong> created in Lab 1. Also, update the <strong><em>eTag</em></strong> based on previous step.</li>
+<pre><code class="hljs nix">aws deploy create-deployment --application-name DevOps-WebApp --deployment-group-name DevOps-WebApp-BetaGroup --description <span class="hljs-string">"My very first deployment"</span> --s3-location <span class="hljs-variable">bucket=</span>&lt;&lt;YOUR-CODEBUILD-OUTPUT-BUCKET&gt;&gt;,<span class="hljs-variable">key=</span>WebAppOutputArtifact.zip,<span class="hljs-variable">bundleType=</span>zip,<span class="hljs-variable">eTag=</span>&lt;&lt;YOUR-ETAG-VALUE&gt;&gt;
+</code></pre>
+<li>
+<p><strong>Verify</strong> the deployment status by visiting the <strong>CodeDeploy console</strong>.</p>
+</li>
+<li>
+<p>Check the deploy console for status. if the deployment failed, then look at the error message and correct the deployment issue.</p>
+</li>
+<li>
+<p>if the status of deployment is success, we should be able to view the web application deployed successfully to the EC2 server namely <strong><em>DevWebApp01</em></strong></p>
+</li>
+<li>
+<p>Go to the <strong>EC2 Console</strong>, get the <strong>public DNS name</strong> of the server and open the url in a browser. You should see a sample web application.</p>
+</li>
+</ol>
+
+<h3 id="summary_1">Summary:</h3>
+<p>This <strong>concludes Lab 2</strong>. In this lab, we successfully created CodeDeploy application and deployment group. We also modified buildspec.yml to include additional components needed for deployment. We also successfully completed deployment of application to test server.</p>
+<p><strong><em>✅ Do It Yourself (DIY):</em></strong> Environment variable for CodeBuild. How can we specifiy environment variable for your Build Environment. Environment variable contains a mapping of key/value scalars, where each mapping represents a single custom environment variable in plain text. key is the name of the custom environment variable, and value is that variable's value. To know more about how to pass environment variable. <a href="http://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html">Check the build spec reference</a></p>
+<ul>
+    <li>Use SSM as Parameter Store.</li>
+    <li>
+        <p>If you want to store environment variables outside, then use Amazon EC2 Systems Manager Parameter Store. <a href="http://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-paramstore-walk.html#sysman-paramstore-console">Check this for how to store parameter and secure them using KMS</a>.</p>
+    </li>
+    <li>
+        <p>To allow AWS CodeBuild to retrieve custom environment variables stored in Amazon EC2 Systems Manager Parameter Store, you must add the ssm:GetParameters action to your AWS CodeBuild service role.</p>
+    </li>
+</ul>
+
+<hr>
+
+<h2 id="lab-3-setup-cicd-using-aws-codepipeline">Lab 3 - Setup CI/CD using AWS CodePipeline</h2>
+<h3 id="stage-1-create-a-pipeline-console">Stage 1: Create a Pipeline (Console)</h3>
+<p>To create a pipeline in the console, you’ll need to provide the source file location and information about the providers you will use for your actions.</p>
+<p>When you use the pipeline wizard, AWS CodePipeline creates the names of stages (Source, Build, Staging). These names cannot be changed. However, you can delete Build and Staging if you prefer to alter the names. You can give more specific names (for example, BuildToGamma or DeployToProd) to stages you add later.</p>
+<p>Also, existing pipeline configuration can be exported and used to create pipeline in another region.</p>
+<ol>
+    <li>
+        <p>Sign in to the <strong>AWS Management Console</strong> and open the <strong>AWS CodePipeline</strong> console at <a href="http://console.aws.amazon.com/codepipeline">http://console.aws.amazon.com/codepipeline</a>.</p>
+    </li>
+    <li>
+        <p>On the <strong>Welcome</strong> page, choose <strong>Create pipeline</strong>.</p>
+    </li>
+      <p>If this is your first time using AWS CodePipeline, an introductory page appears instead of <strong>Welcome</strong>. Choose <strong>Get Started Now</strong>.</p>
+    <li>
+      <p>On the <strong>Step 1: Name</strong> page, in the <strong>Pipeline name</strong> box, type the name for your pipeline, and then choose <strong>Next step</strong>.</p>
+    </li>
+    <p>Within a single AWS account, each pipeline you create in a region must have a unique name. Names can be reused for pipelines in different regions.</p>
+    <p><strong><em>Note</em></strong>
+    <br> After you create a pipeline, you cannot change its name. For information about other limitations, see <a href="https://docs.aws.amazon.com/codepipeline/latest/userguide/limits.html">Limits in AWS CodePipeline</a>.</p>
+    <li><p>On the <strong>Step 2: Source</strong> page, in the <strong>Source provider</strong> drop-down list, choose the type of repository where your source code is stored and specify its required options:</p>
+    </li>
+    <ul>
+      <li><p><strong>AWS CodeCommit</strong>: In <strong>Repository name</strong>, choose the name of the AWS CodeCommit repository you created in Lab 1 to use as the source location for your pipeline. In Branch name, from the drop-down list, choose the branch you want to use.</p>
+      </li>
+      <li><p>After you choose the AWS CodeCommit repository name and branch, a message is displayed in <strong>Change Detection Mode</strong> showing the Amazon CloudWatch Events rule that will be created for this pipeline. Leave default selection. Choose <strong>Next step</strong>.</p>
+      </li>
+    </ul>
+    <li>
+      <p>On the <strong>Step 3: Build</strong> page, do the following, and then choose <strong>Next step:</strong></p>
+    </li>
+<ul>
+    <li><p>Choose <strong>AWS CodeBuild</strong>, and then <strong>Select</strong> an <strong>existing build project</strong> we created in Lab 1.</p></li>
+    <li><p>Then choose <strong>Next step</strong>.</p></li>
+</ul>
+    <li><p></p>On the <strong>Step 4: Deploy</strong> page, do the following, and then choose Next step:<p></p></li>
+<ul>
+    <li><p>Choose the following default providers from the Deployment provider drop-down list:</p>
+        <ul>
+            <li><p><strong>AWS CodeDeploy:</strong> Type or choose the name of an existing AWS CodeDeploy application in Application name and the name of a deployment group for that application in Deployment group <strong>created in Lab2</strong> and then choose <strong>Next step</strong>.</p></li>
+        </ul>
+    </li>
+</ul>
+    <li><p>On the <strong>Step 5: Service Role</strong> page, do the following, and then choose <strong>Next step</strong>:</p></li>
+<ul>
+    <li><p>In the <strong>Service Role</strong>, drop-down list, choose an IAM service role we <strong>create in Lab 1</strong> for AWS CodePipeline.</p></li>
+</ul>
+    <li><p>On the <strong>Step 6: Review</strong> page, review your pipeline configuration, and then choose <strong>Create pipeline</strong> to create the pipeline.</p></li>
+<li>
+<p>Now that you’ve created your pipeline, you can view it in the console. Pipeline will start automatically in few minutes. Otherwise, test it by manually clicking the <strong>Release</strong> button.</p>
+</li>
+</ol>
+
+<hr>
+
+<h3 id="stage-2-create-codedeploy-deployment-group-for-production">Stage 2: Create CodeDeploy Deployment group for Production</h3>
+<ol>
+<li>Run the following to create a deployment group and associates it with the specified application and the user's AWS account. You need to replace the service role ARN we created using roles stack.</li>
+<pre><code class="hljs fortran">aws deploy create-deployment-group --application-<span class="hljs-keyword">name</span> DevOps-WebApp  --deployment-config-<span class="hljs-keyword">name</span> CodeDeployDefault.OneAtATime --deployment-group-<span class="hljs-keyword">name</span> DevOps-WebApp-ProdGroup --ec2-tag-filters Key=<span class="hljs-keyword">Name</span>,<span class="hljs-keyword">Value</span>=ProdWebApp01,<span class="hljs-keyword">Type</span>=KEY_AND_VALUE --service-role-arn &lt;&lt;REPLACE-WITH-YOUR-CODEDEPLOY-ROLE-ARN&gt;&gt;
+</code></pre>
+
+<p><strong><em>Note:</em></strong> We are using the different group name and Production tag to attach instance to the deployment group.</p>
+</ol>
+
+<hr>
+
+<h3 id="stage-3-edit-a-pipeline-console">Stage 3: Edit a Pipeline (Console)</h3>
+<p>You can use the AWS CodePipeline console to add, edit, or remove stages in a pipeline, as well as to add, edit, or remove actions in a stage.</p>
+<p>We will edit the pipeline to add the stage for production deployment and introduce manual gating for production deployment.</p>
+<ol>
+    <li>
+        <p>On the pipeline details page, choose <strong>Edit</strong>. This opens the editing page for the pipeline.</p>
+    </li>
+    <li>
+        <p>To add a stage, choose <strong>+ Stage</strong> after the existing <strong>Staging</strong> Stage. </p>
+    </li>
+    <li>
+      <p>Provide a name for the stage as <strong>Prod</strong>, and then add an one action to it. Items marked with an asterisk are required.</p>
+    </li>
+    <li>
+        <p>The Add action panel opens. In Action category, choose the category as <strong>Deploy</strong>.</p>
+    </li>
+    <li>
+      <p>In <strong>Deploy Action</strong> section: provide name as <strong>ProductionDeployment</strong> and deployment provider as <strong>AWS CodeDeploy</strong></p>
+    </li>
+    <li>
+      <p>In <strong>AWS CodeDeploy:</strong> Type or choose the name of an existing AWS CodeDeploy application in Application name and the name the <strong>production deployment group</strong> created previous stage</p>
+    </li>
+    <li>
+      <p>In <strong>Input artifacts</strong>: select the <strong>MyAppBuild</strong></p>
+    </li>
+    <li>
+      <p>Choose <strong>Add Action</strong>.</p>
+    </li>
+    <li>
+      <p>Finally, save changes by clicking <strong>Save pipeline changes</strong> button.</p></li>
+</ol>
+
+<hr>
+
+<h3 id="stage-4-add-manual-approval-action">Stage 4: Add Manual approval action</h3>
+<p>In AWS CodePipeline, you can add an approval action to a stage in a pipeline at the point where you want the pipeline execution to stop so that someone with the required AWS Identity and Access Management permissions can approve or reject the action.</p>
+<p>If the action is approved, the pipeline execution resumes. If the action is rejected—or if no one approves or rejects the action within seven days of the pipeline reaching the action and stopping—the result is the same as an action failing, and the pipeline execution does not continue.</p>
+<ol>
+<li><strong>Create SNS topic</strong> for Approval notification. And note the <strong>topic ARN</strong> from the result.</li>
+<pre><code class="hljs sql">aws sns <span class="hljs-operator"><span class="hljs-keyword">create</span>-topic <span class="hljs-comment">--name WebApp-Approval-Topic</span>
+</span></code></pre>
+
+<li><strong>Subscribe</strong> to the topic using your email id. <strong>Replace</strong> the <strong>ARN</strong> and <strong>email id</strong> placeholders accordingly.</li>
+<pre><code class="hljs brainfuck"><span class="hljs-comment">aws</span> <span class="hljs-comment">sns</span> <span class="hljs-comment">subscribe</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">topic</span><span class="hljs-literal">-</span><span class="hljs-comment">arn</span> &lt;&lt;<span class="hljs-comment">YOUR</span><span class="hljs-literal">-</span><span class="hljs-comment">TOPIC</span><span class="hljs-literal">-</span><span class="hljs-comment">ARN</span>&gt;&gt; <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">protocol</span> <span class="hljs-comment">email</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">notification</span><span class="hljs-literal">-</span><span class="hljs-comment">endpoint</span> &lt;&lt;<span class="hljs-comment">YOUR</span><span class="hljs-literal">-</span><span class="hljs-comment">EMAIL</span><span class="hljs-literal">-</span><span class="hljs-comment">ID</span>&gt;&gt;
+</code></pre>
+
+<li>
+<p>An Email would be sent for <strong>confirmation</strong> on the subscription. <strong>Acknowledge</strong> the subscription to receive mails from topic.</p>
+</li>
+<li>
+<p>Choose <strong>+ Stage</strong> at the point in the pipeline <strong>between Staging</strong> and <strong>Prod</strong> stage, and type a name for the stage.</p>
+</li>
+<li>
+<p>Choose the <strong>+ action icon</strong>.</p>
+</li>
+<li>
+<p>On the <strong>Add action</strong> page, do the following:</p>
+</li>
+<li>
+<p>In <strong>Action category</strong>, choose <strong>Approval</strong>.</p>
+</li>
+<li>
+<p>In <strong>Action name</strong>, type a name to identify the action.</p>
+</li>
+<li>
+<p>In <strong>Approval type</strong>, choose <strong>Manual approval</strong>.</p>
+</li>
+<li>
+<p>In <strong>SNS topic ARN</strong>, choose the name of the topic created to send notifications for the approval action.</p>
+</li>
+<li>
+<p>(Optional) In <strong>Comments</strong>, type any additional information you want to share with the reviewer.</p>
+</li>
+<li>
+<p>Choose <strong>Add action</strong>.</p>
+</li>
+<li>
+<p>To test your action, choose <strong>Release change</strong> to process that commit through the pipeline, commit a change to the source specified in the source stage of the pipeline.</p>
+</li>
+</ol>
+
+<hr>
+
+<h3 id="stage-5-approve-or-reject-an-approval-action-in-aws-codepipeline">Stage 5: Approve or Reject an Approval Action in AWS CodePipeline</h3>
+<p>If you receive a notification that includes a direct link to an approval action, choose the <strong>Approve or reject</strong> link, sign in to the console if necessary, and then continue with step 7 below. Otherwise, use all the following steps.</p>
+<ol>
+<li>
+<p>Open the <strong>AWS CodePipeline console</strong> at https://console.aws.amazon.com/codepipeline/.</p>
+</li>
+<li>
+<p>On the <strong>All Pipelines</strong> page, choose the name of the pipeline.</p>
+</li>
+<li>
+<p><em>Locate</em> the stage with the approval action.</p>
+</li>
+<li>
+<p>Hover over the information icon to view the comments and URL, if any. The information pop-up message will also display the URL of content for you to review, if one was included.</p>
+</li>
+<li>
+<p>If a URL was provided, choose the <strong>Manual approval</strong> link in the action to open the target Web page, and then review the content.</p>
+</li>
+<li>
+<p>Return to the pipeline details view, and then choose the <strong>Review</strong> button.</p>
+</li>
+<li>
+<p>In the <strong>Approve or reject</strong> the revision window, type comments related to your review, such as why you are approving or rejecting the action, and then choose the <strong>Approve</strong> or <strong>Reject</strong> button.</p>
+</li>
+</ol>
+
+<h3 id="summary_2">Summary:</h3>
+<p>This <strong>concludes Lab 3</strong>. In this lab, we successfully created CodePipeline for continuous code build and deployment. We also modified CodePipeline to include manual approval action before deploying code to production environment. We also successfully completed continuos deployment of application to both test and production servers.</p>
+<p><strong><em>✅ Do It Yourself (DIY):</em></strong>
+    </p><ul>
+        <li>
+            <p>Import and Export pipeline. Refer this <a href="http://docs.aws.amazon.com/codepipeline/latest/userguide/pipelines-create.html#pipelines-create-cli">link</a></p>
+        </li>
+        <li>
+            Using the CodeDeploy Console try to do the following tasks.
+            <ul>
+                <li>
+                    <p>Enable triggers on your Production Deployment group for specific events.</p>
+                </li>
+                <li>
+                    <p>Change the deployment type from In placement to BlueGreen. Also check various deployment config options.</p>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+<hr>
+
+<h2 id="lab-4-using-lambda-as-test-stage-in-codepipeline">Lab 4 - Using Lambda as Test Stage in CodePipeline</h2>
+<h3 id="stage-1-create-a-sample-lambda-function">Stage 1: Create a sample Lambda function</h3>
+<ol>
+    <li>
+        <p>Sign in to the AWS Management Console and open the AWS Lambda console at https://console.aws.amazon.com/lambda/.</p>
+    </li>
+    <li>
+        <p>On the <strong>Lambda</strong> console page, choose <strong>Create a function</strong>.</p>
+    </li>
+    <li>
+        <p>On the <strong>Blueprints</strong> page, choose <strong>Author from scratch</strong>.</p>
+    </li>
+    <li>
+        <p>On the <strong>Basic information section</strong> page </p><p>
+          </p><ul>
+          <li>
+          <p> For <strong>Name*</strong>, type a name for your Lambda function (for example, <strong>MyLambdaFunctionForAWSCodePipeline</strong>).</p>
+          </li>
+          <li>
+          <p> For <strong>Role*</strong>, select <strong>choose an existing role.</strong></p>
+          </li>
+          <li>
+          <p> For <strong>Existing role*</strong> select <strong>CodePipelineLambdaExecRole</strong> which we created as part of the Lab 1 setup.</p>
+          </li>
+        </ul>
+    </li>
+    <li>
+      <p>Click <strong>Create Function</strong></p>
+    </li>
+    <li><p>Choose Runtime as <strong> Node.js 6.10</strong> if it is not defaulted.</p>
+    </li>
+    <li>
+     <p>Then copy the following code into the Lambda function code box</p>
+   </li>
+<pre><code class="hljs javascript"><span class="hljs-keyword">var</span> assert = <span class="hljs-built_in">require</span>(<span class="hljs-string">'assert'</span>);
+<span class="hljs-keyword">var</span> AWS = <span class="hljs-built_in">require</span>(<span class="hljs-string">'aws-sdk'</span>);
+<span class="hljs-keyword">var</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">'http'</span>);
+
+exports.handler = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event, context)</span> </span>{
+
+    <span class="hljs-keyword">var</span> codepipeline = <span class="hljs-keyword">new</span> AWS.CodePipeline();
+
+    <span class="hljs-comment">// Retrieve the Job ID from the Lambda action</span>
+    <span class="hljs-keyword">var</span> jobId = event[<span class="hljs-string">"CodePipeline.job"</span>].id;
+
+    <span class="hljs-comment">// Retrieve the value of UserParameters from the Lambda action configuration in AWS CodePipeline, in this case a URL which will be</span>
+    <span class="hljs-comment">// health checked by this function.</span>
+    <span class="hljs-keyword">var</span> url = event[<span class="hljs-string">"CodePipeline.job"</span>].data.actionConfiguration.configuration.UserParameters;
+
+    <span class="hljs-comment">// Notify AWS CodePipeline of a successful job</span>
+    <span class="hljs-keyword">var</span> putJobSuccess = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(message)</span> </span>{
+        <span class="hljs-keyword">var</span> params = {
+            jobId: jobId
+        };
+        codepipeline.putJobSuccessResult(params, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, data)</span> </span>{
+            <span class="hljs-keyword">if</span>(err) {
+                context.fail(err);
+            } <span class="hljs-keyword">else</span> {
+                context.succeed(message);
+            }
+        });
+    };
+
+    <span class="hljs-comment">// Notify AWS CodePipeline of a failed job</span>
+    <span class="hljs-keyword">var</span> putJobFailure = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(message)</span> </span>{
+        <span class="hljs-keyword">var</span> params = {
+            jobId: jobId,
+            failureDetails: {
+                message: <span class="hljs-built_in">JSON</span>.stringify(message),
+                type: <span class="hljs-string">'JobFailed'</span>,
+                externalExecutionId: context.invokeid
+            }
+        };
+        codepipeline.putJobFailureResult(params, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, data)</span> </span>{
+            context.fail(message);
+        });
+    };
+
+    <span class="hljs-comment">// Validate the URL passed in UserParameters</span>
+    <span class="hljs-keyword">if</span>(!url || url.indexOf(<span class="hljs-string">'http://'</span>) === -<span class="hljs-number">1</span>) {
+        putJobFailure(<span class="hljs-string">'The UserParameters field must contain a valid URL address to test, including http:// or https://'</span>);
+        <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-comment">// Helper function to make a HTTP GET request to the page.</span>
+    <span class="hljs-comment">// The helper will test the response and succeed or fail the job accordingly</span>
+    <span class="hljs-keyword">var</span> getPage = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(url, callback)</span> </span>{
+        <span class="hljs-keyword">var</span> pageObject = {
+            body: <span class="hljs-string">''</span>,
+            statusCode: <span class="hljs-number">0</span>,
+            contains: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(search)</span> </span>{
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.body.indexOf(search) &gt; -<span class="hljs-number">1</span>;
+            }
+        };
+        http.get(url, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(response)</span> </span>{
+            pageObject.body = <span class="hljs-string">''</span>;
+            pageObject.statusCode = response.statusCode;
+
+            response.on(<span class="hljs-string">'data'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(chunk)</span> </span>{
+                pageObject.body += chunk;
+            });
+
+            response.on(<span class="hljs-string">'end'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+                callback(pageObject);
+            });
+
+            response.resume();
+        }).on(<span class="hljs-string">'error'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(error)</span> </span>{
+            <span class="hljs-comment">// Fail the job if our request failed</span>
+            putJobFailure(error);
+        });
+    };
+
+    getPage(url, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(returnedPage)</span> </span>{
+        <span class="hljs-keyword">try</span> {
+            <span class="hljs-comment">// Check if the HTTP response has a 200 status</span>
+            assert(returnedPage.statusCode === <span class="hljs-number">200</span>);
+            <span class="hljs-comment">// Check if the page contains the text "Congratulations"</span>
+            <span class="hljs-comment">// You can change this to check for different text, or add other tests as required</span>
+            assert(returnedPage.contains(<span class="hljs-string">'A Sample web application'</span>));
+
+            <span class="hljs-comment">// Succeed the job</span>
+            putJobSuccess(<span class="hljs-string">"Tests passed."</span>);
+        } <span class="hljs-keyword">catch</span> (ex) {
+            <span class="hljs-comment">// If any of the assertions failed then fail the job</span>
+            putJobFailure(ex);
+        }
+    });
+};
+</code></pre>
+<p><strong><em>Note</em></strong> The event object, under the CodePipeline.job key, contains the <a href="http://docs.aws.amazon.com/codepipeline/latest/APIReference/API_JobDetails.html">job details</a>. For a full example of the JSON event AWS CodePipeline returns to Lambda, see <a href="http://docs.aws.amazon.com/codepipeline/latest/userguide/actions-invoke-lambda-function.html#actions-invoke-lambda-function-json-event-example">Example JSON Event</a>.</p>
+
+                    <li>
+                        <p>Scroll down to <strong>Basic settings section</strong>, set <strong>Timeout</strong>, type <strong>20</strong> for sec.</p>
+                    </li>
+                    <li>
+                        <p>Scroll up and click  <strong>Save</strong> button.</p>
+                    </li>
+
+                </ol>
+
+<hr>
+
+<h3 id="stage-2-add-the-lambda-function-to-a-pipeline-in-the-aws-codepipeline-console">Stage 2: Add the Lambda Function to a Pipeline in the AWS CodePipeline Console</h3>
+<p>In this step, you will add a new stage to your pipeline, and then add an action—a Lambda action that calls your function— to that stage.</p>
+<ol>
+<li><strong>Edit</strong> the pipeline. Choose the option to add a stage after the <strong>Staging</strong> stage with the AWS CodeDeploy action. Type a name for the stage (for example, <strong>LambdaTest</strong>), and then choose the option to add an action to the stage.</li>
+<p><strong><em>Note</em></strong>
+You can also choose to add your Lambda action to an existing stage. For demonstration purposes, we are adding the Lambda function as the only action in a stage to allow you to easily view its progress as artifacts progress through a pipeline.</p>
+<li>
+<p>In the <strong>Add action</strong> panel, for <strong>Action category</strong>, choose <strong>Invoke</strong>.</p>
+<ul>
+    <li><p> Under <strong>Invoke actions</strong>, for <strong>Action name</strong>, type a name for your Lambda action (for example, <strong>MyLambdaAction</strong>).</p>
+    </li>
+    <li><p> For <strong>Provider</strong>, choose <strong>AWS Lambda</strong>.</p>
+    </li>
+    <li><p> For <strong>Function name</strong>, choose or type the name of your Lambda function (for example, <strong>MyLambdaFunctionForAWSCodePipeline</strong>).</p>
+    </li>
+    <li><p> For <strong>User parameters</strong>, specify the Public DNS address for the Amazon EC2 <strong>DevWebApp01</strong> instance you copied earlier (for example, http://ec2-52-62-36-220.ap-southeast-2.compute.amazonaws.com), and then choose <strong>Add action</strong>.</p>
+    </li>
+ </ul>
+</li>
+<li>
+<p>On the <strong>Edit</strong> page, choose <strong>Save pipeline changes</strong>.</p>
+</li>
+</ol>
+
+<hr>
+
+<h3 id="stage-3-test-the-pipeline-with-the-lambda-function">Stage 3: Test the Pipeline with the Lambda function</h3>
+<p>To test the function, release the most recent change through the pipeline.</p>
+<p><strong>To use the console to run the most recent version of an artifact through a pipeline</strong></p>
+<ol>
+<li>
+<p>On the pipeline details page, choose <strong>Release change</strong>. This will run the most recent revision available in each source location specified in a source action through the pipeline.</p>
+</li>
+<li>
+<p>When the Lambda action is complete, choose the <strong>Details</strong> link to view the log stream for the function in Amazon CloudWatch, including the billed duration of the event. If the function failed, the CloudWatch log will provide information about the cause.</p>
+</li>
+</ol>
+<h3 id="summary_3">Summary:</h3>
+<p>This <strong>concludes Lab 4</strong>. In this lab, we successfully created Lambda function to test our application deployment. Now that you've successfully created a Lambda function and added it as an action in a pipeline, you can modify the Lambda function to check for a different text string.</p>
+
+<hr>
+
+<h2 id="additional-exercise">✅ Additional Exercise</h2>
+<h3 id="stage-1-pipeline-infrastrture-as-code">Stage 1: Pipeline + Infrastrture as code</h3>
+<p>The whole lab activities from lab 1 to 3 in setting up CodeBuild, CodeDeploy and CodePipeline can be managed as code using CloudFormation. You can use the below template as sample to automate the creation.</p>
+<p>https://s3.amazonaws.com/devops-workshop-0526-2051/aws-pipeline-commit-build-delpoy.template</p>
+<h3 id="stage-2-how-to-integrate-other-version-control-services-with-codepipeline">Stage 2: How to integrate other version control services with CodePipeline</h3>
+<p>Most of the version control systems provide Webhook for integration. Webhooks notify a remote service by issuing an HTTP POST when a commit is pushed to the repository. We can use AWS Lambda to receive the HTTP POST through Amazon API Gateway, and then download a copy of the repository.</p>
+<p>The following steps are explained in detail in the blog.https://aws.amazon.com/blogs/devops/integrating-git-with-aws-codepipeline/</p>
+<h3 id="stage-3-how-to-custom-build-environment-for-codebuild">Stage 3: How to custom build environment for CodeBuild</h3>
+<p>Follow this blog. https://aws.amazon.com/blogs/devops/extending-aws-codebuild-with-custom-build-environments/</p>
+<h3 id="stage-4-how-to-use-jenkins-build-server-to-build-the-project">Stage 4: How to use Jenkins build server to build the project</h3>
+<p>Follow this tutorial.
+http://docs.aws.amazon.com/codepipeline/latest/userguide/tutorials-four-stage-pipeline.html</p>
+
+<hr>
+
+<h2 id="cleanup-exercise">Clean up:</h2>
+<ol>
+  <li>
+  <p>Visit <a href="https://console.aws.amazon.com/codepipeline/home">CodePipeline console,</a> select the created pipeline. Select the Edit and click <strong>Delete</strong>.</p><p>
+  </p></li>
+  <li>
+  <p>Visit <a href="https://console.aws.amazon.com/codedeploy/home">CodeDeploy console,</a> select the created application. In the next page, click <strong>Delete Application</strong>.</p><p>
+  </p></li>
+  <li>
+  <p>Visit <a href="https://console.aws.amazon.com/codebuild/home">CodeBuild console,</a> select the created project. Select the Action and click <strong>Delete </strong>.</p><p>
+  </p></li>
+  <li>
+  <p>Visit <a href="https://console.aws.amazon.com/codecommit/home">CodeCommit console,</a> select the created repository. Go to setting and click <strong>Delete repository</strong>.</p><p>
+  </p></li>
+  <li>
+  <p>Visit <a href="https://console.aws.amazon.com/lambda/home">Lambda console,</a> select the created function. Select the Action and click <strong>Delete</strong>.</p><p>
+  </p></li>
+  <li>
+  <p>Visit <a href="https://console.aws.amazon.com/cloudformation/home">Cloudformation console,</a> select the created stacks. Select the Action and click <strong>Delete Stack</strong>.</p><p>
+  </p></li>
+</ol>
+
+<h1 id="authors">Authors</h1>
+<p><a href="https://www.linkedin.com/in/balajii/">Balaji Iyer</a></p>
+<p><a href="https://www.linkedin.com/in/ksambandam">Karthik Thirugnanasambandam</a> </p>
+
+</div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Copyright © Amazon Web Services 2017.</p>
+        </footer>
+        <script>var base_url = '.';</script>
+        <script src="./workshop_files/base.js.download"></script>
+        <script src="./workshop_files/require.js.download"></script>
+        <script src="./workshop_files/search.js.download"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>←</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>→</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    
+
+
+<!--
+MkDocs version : 0.17.1
+Build Date UTC : 2017-11-13 02:06:28
+-->
+<iframe frameborder="0" scrolling="no" style="background-color: transparent; border: 0px; display: none;" src="./workshop_files/saved_resource.html"></iframe><div id="GOOGLE_INPUT_CHEXT_FLAG" input="" input_stat="{&quot;tlang&quot;:true,&quot;tsbc&quot;:true,&quot;pun&quot;:true,&quot;mk&quot;:true,&quot;ss&quot;:true}" style="display: none;"></div></body></html>
