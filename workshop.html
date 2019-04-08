@@ -65,7 +65,7 @@
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="aws-devops-essentials"><a href="./workshop_files/aws-reinvent-logo.png"><img alt="N|Solid" src="./workshop_files/aws-reinvent-logo.png"></a> AWS DevOps Essentials</h1>
+<h1 id="aws-devops-essentials"><a href="./workshop_files/avlr_logo.jpg"><img alt="N|Solid" src="./workshop_files/avlr_logo.jpg"></a> AWS DevOps Essentials</h1>
 <h2 id="an-introductory-workshop-on-cicd-practices">An Introductory Workshop on CI/CD Practices</h2>
 <p>In few hours, quickly learn how to effectively leverage various AWS services to improve developer productivity and reduce the overall time to market for new product capabilities. In this session, we will demonstrate a prescriptive approach to incrementally adopt and embrace some of the best practices around continuous integration &amp; delivery using AWS Developer Tools and 3rd party solutions including, AWS CodeCommit (a managed source control service), AWS CodeBuild (a fully managed build service), Jenkins (an open source automated build server), CodePipeline (a fully managed continuous delivery service), and CodeDeploy (an automated application deployment service). We will also highlight some best practices and productivity tips that can help make your software release process fast, automated, and reliable.</p>
 <h1 id="prerequisites">Prerequisites:</h1>
@@ -634,7 +634,7 @@ service codedeploy-agent start
         <p>On the pipeline details page, choose <strong>Edit</strong>. This opens the editing page for the pipeline.</p>
     </li>
     <li>
-        <p>To add a stage, choose <strong>+ Stage</strong> after the existing <strong>Staging</strong> Stage. </p>
+        <p>To add a stage, choose <strong>+ Stage</strong> after the existing <strong>Deploy</strong> Stage. </p>
     </li>
     <li>
       <p>Provide a name for the stage as <strong>Prod</strong>, and then add an one action to it. Items marked with an asterisk are required.</p>
@@ -649,7 +649,7 @@ service codedeploy-agent start
       <p>In <strong>AWS CodeDeploy:</strong> Type or choose the name of an existing AWS CodeDeploy application in Application name and the name the <strong>production deployment group</strong> created previous stage</p>
     </li>
     <li>
-      <p>In <strong>Input artifacts</strong>: select the <strong>MyAppBuild</strong></p>
+      <p>In <strong>Input artifacts</strong>: select <strong>BuildArtifacts</strong></p>
     </li>
     <li>
       <p>Choose <strong>Add Action</strong>.</p>
@@ -676,7 +676,7 @@ service codedeploy-agent start
 <p>An Email would be sent for <strong>confirmation</strong> on the subscription. <strong>Acknowledge</strong> the subscription to receive mails from topic.</p>
 </li>
 <li>
-<p>Choose <strong>+ Stage</strong> at the point in the pipeline <strong>between Staging</strong> and <strong>Prod</strong> stage, and type a name for the stage.</p>
+<p>Choose <strong>+ Stage</strong> at the point in the pipeline <strong>between Deploy</strong> and <strong>Prod</strong> stage, and type a name for the stage.</p>
 </li>
 <li>
 <p>Choose the <strong>+ action icon</strong>.</p>
